@@ -1,0 +1,8 @@
+_type: prompt
+input_variables:
+- input
+output_parser: null
+partial_variables: {}
+template: Tell me a joke about {input}
+template_format: f-string
+validate_template: true
