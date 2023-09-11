@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Text on Image</title>
+    <style>
+        body {
+            background-image: url("/static/background.jpg");
+            background-size: cover;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        .messages {
+            padding: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="messages">
+        {% if user_message %}
+        <p>You: {{ user_message }}</p>
+        {% endif %}
+        {% if ai_message %}
+        <p>AI: {{ ai_message }}</p>
+        {% endif %}
+    </div>
+
+    <form action="/" method="post">
+        <input type="text" name="user_message" placeholder="Type a message...">
+        <input type="submit" value="Send">
+    </form>
+</body>
+
+</html>
