@@ -31,3 +31,17 @@ services:
       - .env
     depends_on:
       - postgres
+
+  frontend_italian:
+    build: ./frontend_italian
+    ports:
+      - "3000:3000"
+
+  frontend_korean:
+    build: ./frontend_korean
+    ports:
+      - "4000:4000"
+
+volumes:
+  redis_data:
+  redis2_data:
