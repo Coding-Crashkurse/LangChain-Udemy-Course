@@ -93,7 +93,7 @@ from fastapi import FastAPI, Header, HTTPException
 app = FastAPI()
 
 
-@app.post("/index")
+@app.post("/ai_service/index")
 async def index_documents(docs_request: List[DocumentRequest]):
     documents = [
         Document(page_content=doc.page_content, metadata=doc.metadata)

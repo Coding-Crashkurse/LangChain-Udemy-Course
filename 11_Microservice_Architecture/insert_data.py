@@ -28,6 +28,6 @@ text_splitter = RecursiveCharacterTextSplitter(
 documents = text_splitter.split_documents(all_docs)
 docs_data = [doc.dict() for doc in documents]
 
-url = "http://localhost:8000/index"
+url = "http://localhost:8000/ai_service/index"
 response = requests.post(url, json=docs_data)
 print(response.json())
