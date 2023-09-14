@@ -11,7 +11,7 @@ const App = () => {
       const conversationId = localStorage.getItem("conversationId");
       if (conversationId) {
         const response = await fetch(
-          `http://localhost:5000/service2/${conversationId}`
+          `http://localhost:5000/conversation_service/${conversationId}`
         );
         const data = await response.json();
         if (!data.error) {
@@ -49,7 +49,7 @@ const App = () => {
     ];
 
     const response = await fetch(
-      `http://localhost:5000/service2/${conversationId}`,
+      `http://localhost:5000/conversation_service/${conversationId}`,
       {
         method: "POST",
         headers: {
@@ -77,7 +77,7 @@ const App = () => {
       }}
     >
       <h1 className="text-3xl font-bold mb-4 text-white">BellaVista Chatbot</h1>
-      {conversation.conversation.length > 0 && (
+      {conversation && conversation.conversation.length > 0 && (
         <div className="flex flex-col p-4 bg-white rounded shadow w-full max-w-md space-y-4">
           {conversation.conversation
             .filter((message) => message.role !== "system")

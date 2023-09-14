@@ -1,4 +1,4 @@
-from typing import List
+from typing import Union, List, Optional
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -25,15 +25,15 @@ app.add_middleware(
 
 
 class Message(BaseModel):
-    role: str
-    content: str
+    role: Optional[str]
+    content: Optional[str]
 
 
 class Conversation(BaseModel):
     conversation: List[Message]
 
 
-@app.get("/service2/{conversation_id}")
+@app.get("/conversation_service/{conversation_id}")
 async def get_conversation(conversation_id: str):
     logger.info(f"Retrieving initial id {conversation_id}")
     existing_conversation_json = r.get(conversation_id)
@@ -44,8 +44,8 @@ async def get_conversation(conversation_id: str):
         return {"error": "Conversation not found"}
 
 
-@app.post("/service2/{conversation_id}")
-async def service2(
+@app.post("/conversation_service/{conversation_id}")
+async def conversation_service(
     conversation_id: str, conversation: Conversation, store: str = Header(None)
 ):
     if not store:
@@ -55,21 +55,16 @@ async def service2(
 
     logger.info(f"Sending Conversation with ID {conversation_id} to OpenAI")
     existing_conversation_json = r.get(conversation_id)
-    if existing_conversation_json:
-        existing_conversation = json.loads(existing_conversation_json)
+    if not existing_conversation_json:
+        existing_conversation = {"conversation": []}
     else:
-        existing_conversation = {
-            "conversation": [
-                {"role": "system", "content": "You are a helpful assistant."}
-            ]
-        }
+        existing_conversation = json.loads(existing_conversation_json)
 
-    existing_conversation["conversation"].append(
-        conversation.dict()["conversation"][-1]
-    )
+    if conversation.dict()["conversation"]:
+        existing_conversation["conversation"].append(conversation.dict()["conversation"][-1])
 
     response = requests.post(
-        f"http://service3:80/service3/{conversation_id}",
+        f"http://ai_service:80/ai_service/{conversation_id}",
         json=existing_conversation,
         headers={"store": store},
     )

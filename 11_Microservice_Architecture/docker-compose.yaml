@@ -16,15 +16,15 @@ services:
       POSTGRES_PASSWORD: admin
       POSTGRES_DB: vectordb
 
-  service2:
-    build: ./service2
+  conversation_service:
+    build: ./conversation_service
     ports:
       - "5000:80"
     depends_on:
       - postgres
 
-  service3:
-    build: ./service3
+  ai_service:
+    build: ./ai_service
     ports:
       - "8000:80"
     env_file:

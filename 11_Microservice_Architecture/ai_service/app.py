@@ -1,4 +1,4 @@
-from typing import List
+from typing import Union, List, Optional
 from fastapi import FastAPI
 from pydantic import BaseModel
 import os
@@ -38,8 +38,8 @@ logger = logging.getLogger(__name__)
 
 
 class Message(BaseModel):
-    role: str
-    content: str
+    role: Optional[str]
+    content: Optional[str]
 
 
 class Conversation(BaseModel):
@@ -109,8 +109,8 @@ async def index_documents(docs_request: List[DocumentRequest]):
     return result
 
 
-@app.post("/service3/{conversation_id}")
-async def service3(
+@app.post("/ai_service/{conversation_id}")
+async def ai_service(
     conversation_id: str, conversation: Conversation, store: str = Header(None)
 ):
     if not store:
