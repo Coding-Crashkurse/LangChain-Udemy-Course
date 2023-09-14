@@ -60,12 +60,24 @@ vectorstore = PGVector(
 )
 
 
-prompt_template = """As a FAQ Bot for our restaurant, you have the following information about our restaurant:
+prompt_template = """
+As the FAQ Bot for our restaurant, your primary role is to provide answers to user inquiries based on the details in the CONTEXT section:
 
-{context}
+CONTEXT: {context}
 
-Please provide the most suitable response for the users question.
-Answer:"""
+If no documents are supplied in the CONTEXT, kindly inform the user that you're unable to address their question. Additionally, avoid responding to subjects unrelated to the restaurant.
+
+For example:
+Question: How old is the queen?
+Answer: I specialize in restaurant-related queries. I'm unable to provide information on that topic.
+
+Question: What's the height of Mount Everest?
+Answer: My expertise lies in answering questions about the restaurant. I can't help with that particular query.
+
+Kindly draft the most fitting response for the user's question.
+Answer:
+"""
+
 
 prompt = PromptTemplate(template=prompt_template, input_variables=["context"])
 system_message_prompt = SystemMessagePromptTemplate(prompt=prompt)
