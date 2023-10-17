@@ -1,0 +1,227 @@
+# Redis Deployment
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+        - name: redis
+          image: redis:latest
+          ports:
+            - containerPort: 6379
+
+# Redis Service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+spec:
+  selector:
+    app: redis
+  ports:
+    - port: 6379
+      targetPort: 6379
+  type: ClusterIP
+
+# Postgres Deployment
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: localhost:5000/postgres:latest # replace ':latest' with the actual version of your image
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              value: "admin"
+            - name: POSTGRES_PASSWORD
+              value: "admin"
+            - name: POSTGRES_DB
+              value: "vectordb"
+
+# Postgres Service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+spec:
+  selector:
+    app: postgres
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+  type: ClusterIP
+
+# Conversation Service Deployment
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: conversation-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: conversation-service
+  template:
+    metadata:
+      labels:
+        app: conversation-service
+    spec:
+      containers:
+        - name: conversation-service
+          image: localhost:5000/conversation_service:latest # replace ':latest' with the actual version of your image
+          ports:
+            - containerPort: 80
+
+# Conversation Service Service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: conversation-service
+spec:
+  selector:
+    app: conversation-service
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 80
+  type: ClusterIP
+
+# AI Service Deployment
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ai-service
+  template:
+    metadata:
+      labels:
+        app: ai-service
+    spec:
+      containers:
+        - name: ai-service
+          image: localhost:5000/ai_service:latest # replace ':latest' with the actual version of your image
+          ports:
+            - containerPort: 80
+
+# AI Service Service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ai-service
+spec:
+  selector:
+    app: ai-service
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 80
+  type: ClusterIP
+
+# Frontend Italian Deployment
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-italian
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend-italian
+  template:
+    metadata:
+      labels:
+        app: frontend-italian
+    spec:
+      containers:
+        - name: frontend-italian
+          image: localhost:5000/frontend_italian:latest # replace ':latest' with the actual version of your image
+          ports:
+            - containerPort: 3000
+
+# Frontend Italian Service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-italian
+spec:
+  selector:
+    app: frontend-italian
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+  type: ClusterIP
+
+# Frontend Korean Deployment
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-korean
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend-korean
+  template:
+    metadata:
+      labels:
+        app: frontend-korean
+    spec:
+      containers:
+        - name: frontend-korean
+          image: localhost:5000/frontend_korean:latest # replace ':latest' with the actual version of your image
+          ports:
+            - containerPort: 4000
+
+# Frontend Korean Service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-korean
+spec:
+  selector:
+    app: frontend-korean
+  ports:
+    - protocol: TCP
+      port: 4000
+      targetPort: 4000
+  type: ClusterIP
