@@ -57,7 +57,10 @@ spec:
             - name: POSTGRES_USER
               value: "admin"
             - name: POSTGRES_PASSWORD
-              value: "admin"
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-password
+                  key: POSTGRES_PASSWORD
             - name: POSTGRES_DB
               value: "vectordb"
           volumeMounts:
@@ -67,7 +70,6 @@ spec:
         - name: init-sql
           configMap:
             name: init-sql
-
 ---
 apiVersion: v1
 kind: Service
@@ -185,21 +187,3 @@ spec:
     - port: 3000
       targetPort: 3000
       nodePort: 31000
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: nginx-ingress-controller
-  namespace: ingress-nginx # use the namespace your ingress controller is deployed in
-spec:
-  type: LoadBalancer
-  ports:
-    - name: http
-      port: 80
-      targetPort: 80
-    - name: https
-      port: 443
-      targetPort: 443
-  selector:
-    app.kubernetes.io/name: ingress-nginx # use the correct selector for your ingress controller pods
-

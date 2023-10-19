@@ -1,0 +1,3 @@
+#!/bin/bash
+
+kubectl create secret generic openai-secret --from-literal=OPENAI_API_KEY=sk-...

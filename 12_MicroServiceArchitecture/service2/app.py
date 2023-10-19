@@ -10,7 +10,7 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-r = redis.Redis(host='redis', port=6379, db=0)
+r = redis.Redis(host="redis", port=6379, db=0)
 
 app = FastAPI()
 app.add_middleware(
@@ -21,13 +21,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 class Message(BaseModel):
     role: str
     content: str
 
+
 class Conversation(BaseModel):
     conversation: List[Message]
-
 
 
 @app.get("/service2/{conversation_id}")
@@ -41,7 +42,6 @@ async def get_conversation(conversation_id: str):
         return {"error": "Conversation not found"}
 
 
-
 @app.post("/service2/{conversation_id}")
 async def service2(conversation_id: str, conversation: Conversation):
     logger.info(f"Sending Conversation with ID {conversation_id} to OpenAI")
@@ -49,12 +49,21 @@ async def service2(conversation_id: str, conversation: Conversation):
     if existing_conversation_json:
         existing_conversation = json.loads(existing_conversation_json)
     else:
-        existing_conversation = {"conversation": [{"role": "system", "content": "You are a helpful assistant."}]}
+        existing_conversation = {
+            "conversation": [
+                {"role": "system", "content": "You are a helpful assistant."}
+            ]
+        }
 
-    existing_conversation["conversation"].append(conversation.dict()["conversation"][-1])
+    existing_conversation["conversation"].append(
+        conversation.model_dump()["conversation"][-1]
+    )
 
     try:
-        response = requests.post(f"http://service3:8000/service3/{conversation_id}", json=existing_conversation)
+        response = requests.post(
+            f"http://service3:8000/service3/{conversation_id}",
+            json=existing_conversation,
+        )
         response.raise_for_status()
     except requests.exceptions.RequestException as e:
         logger.error(f"Request to service3 failed: {e}")
@@ -62,10 +71,10 @@ async def service2(conversation_id: str, conversation: Conversation):
 
     assistant_message = response.json()["reply"]
 
-    existing_conversation["conversation"].append({"role": "assistant", "content": assistant_message})
+    existing_conversation["conversation"].append(
+        {"role": "assistant", "content": assistant_message}
+    )
 
     r.set(conversation_id, json.dumps(existing_conversation))
 
     return existing_conversation
-
-
