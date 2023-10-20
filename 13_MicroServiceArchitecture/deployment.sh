@@ -44,8 +44,8 @@ do_docker() {
 do_kubernetes() {
     echo "Deploy to Kubernetes..."
     kubectl apply -f init-sql.yaml
-    kubectl apply -f all-deployments.yaml
     kubectl apply -f ingress.yaml
+    kubectl apply -f all-deployments.yaml
 }
 
 # Hauptlogik des Skripts

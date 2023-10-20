@@ -28,7 +28,7 @@ Outlined as a microservice architecture blueprint, this setup can be deployed on
    kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
    ```
 
-   Initiate by safeguarding necessary passwords and your OpenAI API key as a secret. Amend the values in `create_secret.sh` and run it using: `bash create_secret.sh`.
+   Initiate by safeguarding necessary passwords and your OpenAI API key as a secret. Amend the values in `secrets.yaml` and run `kubectl apply -f secrets.yaml`.
 
    Kubernetes necessitates an image registry from which to pull images. Create one on your machine, then build your images, tag them, and push them into your registry. Subsequently, you can orchestrate your Deployments, Services, ConfigMaps, and Ingress using the convenience script `deployment.sh`. Run `bash deployment.sh` for comprehensive setup.
 

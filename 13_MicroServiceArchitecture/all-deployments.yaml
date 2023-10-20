@@ -55,12 +55,15 @@ spec:
             - containerPort: 5432
           env:
             - name: POSTGRES_USER
-              value: "admin"
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: username
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: postgres-password
-                  key: POSTGRES_PASSWORD
+                  name: postgres-credentials
+                  key: password
             - name: POSTGRES_DB
               value: "vectordb"
           volumeMounts:
@@ -141,7 +144,22 @@ spec:
                 secretKeyRef:
                   name: openai-secret
                   key: OPENAI_API_KEY
-
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: password
+            - name: DB_HOST
+              value: "postgres"
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_NAME
+              value: "vectordb"
 ---
 apiVersion: v1
 kind: Service
