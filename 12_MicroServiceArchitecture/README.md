@@ -1,79 +1,55 @@
 # Restaurant Chatbot Project
 
-This project is a restaurant chatbot that is distributed across several microservices. The chatbot can answer general questions about the restaurant, such as operating hours, menu options, and health protocols.
+This project introduces an advanced restaurant chatbot distributed across multiple microservices. The chatbot is designed to handle a variety of inquiries about the restaurant, such as operating hours, menu choices, and health and safety measures, thereby improving customer interaction and service.
 
 ## Services
 
-The project consists of the following services:
+The architecture encompasses the following microservices:
 
-1. **Frontend:** A React application that provides the user interface for interacting with the chatbot.
+1. **Frontend:** This React application provides a user-friendly interface, facilitating seamless interaction with the chatbot.
 
-2. **Service2:** A Python (FastAPI)-based backend that coordinates the communication between the frontend and Service3. This service also manages the interaction history between the user and the chatbot.
+2. **Service2:** Built with Python (FastAPI), this backend service serves as the communication bridge between the frontend and Service3, handling the chat history between the user and the chatbot.
 
-3. **Service3:** Another Python (FastAPI)-based backend hosting the chatbot algorithm. This service communicates with the AI engine (OpenAI GPT-3.5-turbo) to process user queries and generate suitable responses.
+3. **Service3:** Another Python (FastAPI) application, this service contains the chatbot algorithm and liaises with the AI engine (OpenAI GPT-3.5-turbo) to interpret user inquiries and formulate appropriate responses.
 
-4. **Redis:** A Redis server used for state storage across the services.
+4. **Redis:** Employed for state storage, this Redis server ensures data consistency across services.
 
-5. **Postgres:** A Postgres server acting as a database for storing vector embeddings.
+5. **Postgres:** This Postgres server is responsible for storing vector embeddings and other relevant data structures.
 
 ## Setup
 
-To get the project up and running, make sure Docker is installed on your system.
+Outlined as a microservice architecture blueprint, this setup can be deployed on a single machine, with potential scalability to larger on-premises clusters or extensive cloud services such as AWS, Google Cloud, or Microsoft Azure. Follow these steps for configuration:
 
-Then, run the following command:
+1. **Docker Desktop:** Docker Desktop, compatible with Windows, Mac, and Linux, enables the establishment of a single-machine Kubernetes cluster. It can be downloaded from [Docker Desktop](https://www.docker.com/products/docker-desktop/).
 
-```bash
-docker-compose up
-```
+2. **Kubernetes Ingress Controller:** Since this component isn't included in the standard Docker Desktop installation, it needs to be installed separately:
 
-This command starts all services using the `docker-compose.yml` file. It downloads the necessary Docker images, creates associated containers, and gets them running together.
+   ```shell
+   kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
+   ```
+
+   Initiate by safeguarding necessary passwords and your OpenAI API key as a secret. Amend the values in `create_secret.sh` and run it using: `bash create_secret.sh`.
+
+   Kubernetes necessitates an image registry from which to pull images. Create one on your machine, then build your images, tag them, and push them into your registry. Subsequently, you can orchestrate your Deployments, Services, ConfigMaps, and Ingress using the convenience script `deployment.sh`. Run `bash deployment.sh` for comprehensive setup.
+
+3. **Verifying Service Status:**
+
+   Inspect the status of your applications with `kubectl get pods`. The expected output:
+
+   | NAME                      | READY | STATUS  | RESTARTS | AGE |
+   | ------------------------- | ----- | ------- | -------- | --- |
+   | frontend-557f997449-d7dm5 | 1/1   | Running | 0        | 22h |
+   | postgres-cf568b9dd-j4pz2  | 1/1   | Running | 0        | 22h |
+   | redis-5f5b7bb696-82z8p    | 1/1   | Running | 0        | 22h |
+   | service2-75595c88b7-cghxg | 1/1   | Running | 0        | 22h |
+   | service3-599b6cc64-2pjpm  | 1/1   | Running | 0        | 22h |
+
+   If there are deviations, diagnose issues within specific pods with commands like `kubectl logs service2-75595c88b7-cghxg`.
+
+4. **Terminating Services:**
+
+   To dismantle your setup, execute: `kubectl delete -f all-deployments.yaml`.
 
 ## Data Population
 
-The provided `insert_data.py` script can be used to populate the Postgres database with your data. To do this, run the script once the services are up and running. It will connect to the Postgres service, create the necessary tables, and insert data into them.
-
-## Env Variable
-
-Rename the .env.example to .env and set your OpenAI API Key.
-
-# LangChain on KuberNetes - Locally
-
-1. Run Registry as Docker Container
-
-`docker run -d -p 5000:5000 --name local-registry registry:2`
-
-2. Build all images locally
-
-```shell
-docker build -t mypostgres ./postgres
-docker build -t myservice2 ./service2
-docker build -t myservice3 ./service3
-docker build -t myfrontend ./frontend
-```
-
-3. Tag and push images
-
-```shell
-# For Postgres
-docker tag mypostgres localhost:5000/mypostgres
-docker push localhost:5000/mypostgres
-
-# For Service2
-docker tag myservice2 localhost:5000/myservice2
-docker push localhost:5000/myservice2
-
-# For Service3
-docker tag myservice3 localhost:5000/myservice3
-docker push localhost:5000/myservice3
-
-# For Frontend
-docker tag myfrontend localhost:5000/myfrontend
-docker push localhost:5000/myfrontend
-```
-
-Store your OpenAI API-Key in a secret:
-`kubectl create secret generic openai-secret --from-literal=OPENAI_API_KEY=sk-xxx`
-
-Now deploy everything to kubernetes with the kubernetes CLI:
-
-`kubectl apply -f all-deployments.yaml`
+Utilize `insert_data.py` to populate your Postgres database with initial data. Once the services are operational, execute the script, which connects to the Postgres service, creates necessary tables, and populates them with data.

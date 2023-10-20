@@ -43,7 +43,9 @@ do_docker() {
 # Funktion, um Kubernetes-Operationen auszuführen
 do_kubernetes() {
     echo "Deploy to Kubernetes..."
+    kubectl apply -f init-sql.yaml
     kubectl apply -f all-deployments.yaml
+    kubectl apply -f ingress.yaml
 }
 
 # Hauptlogik des Skripts
