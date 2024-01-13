@@ -2,6 +2,7 @@ _type: prompt
 input_types: {}
 input_variables:
 - input
+name: null
 output_parser: null
 partial_variables: {}
 template: Tell me a joke about {input}

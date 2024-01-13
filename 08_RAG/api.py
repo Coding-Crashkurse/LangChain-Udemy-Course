@@ -1,14 +1,15 @@
 from fastapi import FastAPI, HTTPException
-import pickle
 
-from langchain.chat_models import ChatOpenAI
+from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
+from langchain.vectorstores.faiss import FAISS
 
 from dotenv import load_dotenv, find_dotenv
 
 load_dotenv(find_dotenv())
 
+embeddings = OpenAIEmbeddings()
 app = FastAPI()
 
 # Updated template with examples, context, and a non-related example
@@ -44,8 +45,7 @@ PROMPT = PromptTemplate(template=template, input_variables=["context", "question
 chain_type_kwargs = {"prompt": PROMPT}
 llm = ChatOpenAI()
 
-with open("vectorstore.pkl", "rb") as f:
-    vectorstore = pickle.load(f)
+vectorstore = FAISS.load_local("index", embeddings)
 retriever = vectorstore.as_retriever()
 
 qa = RetrievalQA.from_chain_type(

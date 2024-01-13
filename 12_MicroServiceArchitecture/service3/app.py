@@ -9,7 +9,7 @@ import logging
 from dotenv import find_dotenv, load_dotenv
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.vectorstores.pgvector import PGVector
-from langchain.chat_models import ChatOpenAI
+from langchain_openai import ChatOpenAI
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.vectorstores.pgvector import PGVector
 from langchain.schema import AIMessage, HumanMessage, SystemMessage
@@ -102,6 +102,6 @@ async def service3(conversation_id: str, conversation: Conversation):
     prompt = system_message_prompt.format(context=docs)
     messages = [prompt] + create_messages(conversation=conversation.conversation)
 
-    result = chat(messages)
+    result = chat.invoke(messages)
 
     return {"id": conversation_id, "reply": result.content}
