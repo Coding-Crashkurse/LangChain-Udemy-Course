@@ -1,4 +1,5 @@
 """Python file to serve as the frontend"""
+
 import streamlit as st
 from streamlit_chat import message
 from dotenv import load_dotenv, find_dotenv
@@ -6,9 +7,14 @@ from langchain.chains import LLMChain
 from langchain_openai import ChatOpenAI
 from langchain.prompts import PromptTemplate
 from langchain.memory import ConversationBufferMemory
-from langchain.memory.chat_message_histories import StreamlitChatMessageHistory
+from langchain_community.chat_message_histories import StreamlitChatMessageHistory
+from langchain.globals import get_verbose
+
+get_verbose()
 
 load_dotenv(find_dotenv())
+
+print()
 
 template = """You are an AI chatbot having a conversation with a human.
 
@@ -59,7 +65,7 @@ def submit():
 st.text_input("You:", key="widget_input", on_change=submit)
 
 if st.session_state.user_input:
-    output = st.session_state.chain.run(st.session_state.user_input)
+    output = st.session_state.chain.invoke(st.session_state.user_input)["text"]
     st.session_state.past.append(st.session_state.user_input)
     st.session_state.generated.append(output)
 
