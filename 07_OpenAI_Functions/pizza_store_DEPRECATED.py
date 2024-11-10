@@ -1,4 +1,4 @@
-from langchain.chat_models import ChatOpenAI
+from langchain_openai.chat_models import ChatOpenAI
 from langchain.prompts import PromptTemplate
 from langchain.chains.openai_functions import create_openai_fn_chain
 
@@ -62,7 +62,7 @@ chain = create_openai_fn_chain([get_pizza_info, add_pizza], llm, prompt, verbose
 
 # result1 = chain.run("I want to add the pizza 'Jumbo' for 13.99")
 # print(result1)
-result2 = chain.run("Who are the main characters of the A-Team?")
+result2 = chain.invoke("Who are the main characters of the A-Team?")
 print(result2)
 
 # result3 = chain.run("How much does the Jumbo pizza cost?")

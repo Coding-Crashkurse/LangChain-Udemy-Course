@@ -1,9 +1,12 @@
 from fastapi import FastAPI, HTTPException
 
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
-from langchain.chains import RetrievalQA
+
+# from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
 from langchain.vectorstores.faiss import FAISS
+from langchain.chains.retrieval import create_retrieval_chain
+from langchain.chains.combine_documents import create_stuff_documents_chain
 
 from dotenv import load_dotenv, find_dotenv
 
@@ -37,29 +40,33 @@ Text: "What's the meaning of life?"
 Answer: "That be outside of me duties to answer, matey!"
 
 Now, using this guidance and adhering to the context, process the text below and give yer best pirate answer:
-text: {question}
+text: {input}
 """
 
-PROMPT = PromptTemplate(template=template, input_variables=["context", "question"])
+PROMPT = PromptTemplate(template=template, input_variables=["context", "input"])
 
-chain_type_kwargs = {"prompt": PROMPT}
-llm = ChatOpenAI()
+# chain_type_kwargs = {"prompt": PROMPT}
+llm = ChatOpenAI(model="gpt-4o-mini")
 
 vectorstore = FAISS.load_local("index", embeddings)
 retriever = vectorstore.as_retriever()
 
-qa = RetrievalQA.from_chain_type(
-    llm=llm,
-    chain_type="stuff",
-    retriever=retriever,
-    chain_type_kwargs=chain_type_kwargs,
-)
+# qa = RetrievalQA.from_chain_type(
+#     llm=llm,
+#     chain_type="stuff",
+#     retriever=retriever,
+#     chain_type_kwargs=chain_type_kwargs,
+# )
+
+combine_docs_chain = create_stuff_documents_chain(llm, PROMPT)
+qa = create_retrieval_chain(retriever=retriever, combine_docs_chain=combine_docs_chain)
 
 
 @app.post("/conversation")
 async def conversation(query: str):
     try:
-        result = qa.run(query=query)
+        result = qa.invoke({"input": query})
+        # result = qa.run(query=query)
         return {"response": result}
     except Exception as e:
         raise HTTPException(detail=str(e), status_code=500)

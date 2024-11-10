@@ -29,7 +29,7 @@ memory = ConversationBufferMemory(memory_key="history", chat_memory=msgs)
 
 
 def load_chain():
-    llm = ChatOpenAI(temperature=0)
+    llm = ChatOpenAI(model="gpt-4o-mini")
     llm_chain = LLMChain(llm=llm, prompt=prompt, memory=memory)
     return llm_chain
 

@@ -1,10 +1,12 @@
 _type: prompt
-input_types: {}
 input_variables:
 - input
+metadata: null
 name: null
+optional_variables: []
 output_parser: null
 partial_variables: {}
+tags: null
 template: Tell me a joke about {input}
 template_format: f-string
 validate_template: false
