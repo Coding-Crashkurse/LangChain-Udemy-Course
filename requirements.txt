@@ -126,11 +126,9 @@ pydeck==0.9.1
 Pygments==2.19.1
 PyPika==0.48.9
 pyproject_hooks==1.2.0
-pyreadline3==3.5.4
 python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
 pytz==2025.1
-pywin32==310
 PyYAML==6.0.2
 pyzmq==26.3.0
 referencing==0.36.2
@@ -173,3 +171,7 @@ wrapt==1.17.2
 yarl==1.18.3
 zipp==3.21.0
 zstandard==0.23.0
+
+# -----------------------------------------------------------------------------
+# Windows-specific dependency
+pywin32==310; sys_platform == 'win32'
