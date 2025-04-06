@@ -48,7 +48,7 @@ def add_pizza(pizza_name: str, price: float) -> dict:
     return {"message": f"Pizza {pizza_name} added successfully!"}
 
 
-llm = ChatOpenAI(model="gpt-3.5-turbo-0613", temperature=0)
+llm = ChatOpenAI(model="gpt-4o-mini-0613", temperature=0)
 
 template = """You are an AI chatbot having a conversation with a human.
 

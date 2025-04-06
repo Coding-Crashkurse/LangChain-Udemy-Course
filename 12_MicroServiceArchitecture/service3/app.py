@@ -7,11 +7,8 @@ import openai
 from langchain.prompts import PromptTemplate
 import logging
 from dotenv import find_dotenv, load_dotenv
-from langchain.embeddings.openai import OpenAIEmbeddings
-from langchain.vectorstores.pgvector import PGVector
-from langchain_openai import ChatOpenAI
-from langchain.embeddings import OpenAIEmbeddings
-from langchain.vectorstores.pgvector import PGVector
+from langchain_postgres import PGVector
+from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain.schema import AIMessage, HumanMessage, SystemMessage
 from langchain.prompts import (
     PromptTemplate,
@@ -31,7 +28,7 @@ db_port = os.getenv("DB_PORT")
 db_name = os.getenv("DB_NAME")
 
 CONNECTION_STRING = (
-    f"postgresql+psycopg2://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}"
+    f"postgresql+psycopg://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}"
 )
 
 logging.basicConfig(level=logging.INFO)
@@ -96,7 +93,7 @@ app.add_middleware(
 async def service3(conversation_id: str, conversation: Conversation):
     query = conversation.conversation[-1].content
 
-    docs = retriever.get_relevant_documents(query=query)
+    docs = retriever.invoke(query=query)
     docs = format_docs(docs=docs)
 
     prompt = system_message_prompt.format(context=docs)
