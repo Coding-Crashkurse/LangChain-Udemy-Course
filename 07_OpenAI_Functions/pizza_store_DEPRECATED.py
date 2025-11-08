@@ -1,6 +1,6 @@
 from langchain_openai.chat_models import ChatOpenAI
-from langchain.prompts import PromptTemplate
-from langchain.chains.openai_functions import create_openai_fn_chain
+from langchain_core.prompts import PromptTemplate
+from langchain_classic.chains.openai_functions import create_openai_fn_chain
 
 from dotenv import load_dotenv, find_dotenv
 

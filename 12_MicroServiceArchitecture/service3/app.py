@@ -4,13 +4,13 @@ from pydantic import BaseModel
 import os
 from fastapi.middleware.cors import CORSMiddleware
 import openai
-from langchain.prompts import PromptTemplate
+from langchain_core.prompts import PromptTemplate
 import logging
 from dotenv import find_dotenv, load_dotenv
 from langchain_postgres import PGVector
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
-from langchain.schema import AIMessage, HumanMessage, SystemMessage
-from langchain.prompts import (
+from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
+from langchain_core.prompts import (
     PromptTemplate,
     SystemMessagePromptTemplate,
 )

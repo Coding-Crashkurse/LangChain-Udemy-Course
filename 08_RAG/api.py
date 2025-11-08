@@ -2,11 +2,11 @@ from fastapi import FastAPI, HTTPException
 
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 
-# from langchain.chains import RetrievalQA
-from langchain.prompts import PromptTemplate
-from langchain.vectorstores.faiss import FAISS
-from langchain.chains.retrieval import create_retrieval_chain
-from langchain.chains.combine_documents import create_stuff_documents_chain
+# from langchain_classic.chains import RetrievalQA
+from langchain_core.prompts import PromptTemplate
+from langchain_community.vectorstores.faiss import FAISS
+from langchain_classic.chains.retrieval import create_retrieval_chain
+from langchain_classic.chains.combine_documents import create_stuff_documents_chain
 
 from dotenv import load_dotenv, find_dotenv
 

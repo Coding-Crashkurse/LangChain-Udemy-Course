@@ -3,14 +3,14 @@
 import streamlit as st
 from streamlit_chat import message
 from dotenv import load_dotenv, find_dotenv
-from langchain.chains.llm import LLMChain
+from langchain_classic.chains.llm import LLMChain
 from langchain_openai import ChatOpenAI
-from langchain.prompts import PromptTemplate
-from langchain.memory import ConversationBufferMemory
+from langchain_core.prompts import PromptTemplate
+from langchain_classic.memory import ConversationBufferMemory
 from langchain_community.chat_message_histories.streamlit import (
     StreamlitChatMessageHistory,
 )
-from langchain.globals import get_verbose
+from langchain_classic.globals import get_verbose
 
 get_verbose()
 
