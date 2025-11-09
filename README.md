@@ -70,3 +70,6 @@ Please rename the `.env.example` to `.env` and provide your OpenAI API Key.
 Linux: `find . -name "*.ipynb" -exec jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace {} \;`
 
 Windows: `for /r %i in (*.ipynb) do jupyter nbconvert --to notebook --ClearOutputPreprocessor.enabled=True --inplace "%i"`
+
+
+### Legacy!
