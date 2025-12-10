@@ -48,8 +48,8 @@ embeddings = OpenAIEmbeddings()
 chat = ChatOpenAI(temperature=0)
 store = PGVector(
     collection_name=db_name,
-    connection_string=CONNECTION_STRING,
-    embedding_function=embeddings,
+    connection=CONNECTION_STRING,
+    embeddings=embeddings,
 )
 retriever = store.as_retriever()
 
