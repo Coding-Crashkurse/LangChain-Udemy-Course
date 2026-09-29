@@ -2,6 +2,24 @@
 
 This Markdown file provides a concise overview of each directory in the LangChain course, detailing the key focus and content of each.
 
+## Setup
+
+This project uses [uv](https://docs.astral.sh/uv/) for dependency management.
+
+```bash
+# install uv (see https://docs.astral.sh/uv/getting-started/installation/)
+uv sync                      # creates .venv and installs all dependencies
+cp .env.example .env         # then add your OPENAI_API_KEY (and LANGCHAIN_API_KEY for 11_LangSmith)
+```
+
+Select the `.venv` interpreter as the Jupyter kernel in your editor, or start Jupyter with `uv run --with jupyter jupyter lab`.
+
+- `10_Hybrid_Search_and_Indexing_API` needs PostgreSQL with pgvector on port 5433: `docker compose -f 10_Hybrid_Search_and_Indexing_API/docker-compose.yaml up -d --build`
+- `11_LangSmith` needs a valid LangSmith API key (`LANGCHAIN_API_KEY`).
+- Run the Streamlit chatbot: `cd 06_Memory && uv run streamlit run chatbot_solution.py`
+- Run the RAG API: `cd 08_RAG && uv run python api.py`
+- `12_MicroServiceArchitecture/service2` and `service3` are small standalone uv projects (own `pyproject.toml` and `uv.lock`) that are built with their Dockerfiles, see `12_MicroServiceArchitecture/README.md`.
+
 ## Directories
 
 - `01_OpenAI_API`
@@ -67,6 +85,6 @@ Please rename the `.env.example` to `.env` and provide your OpenAI API Key.
 
 ### Cleanup of Notebook output:
 
-Linux: `find . -name "*.ipynb" -exec jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace {} \;`
+Linux: `find . -name "*.ipynb" -not -path "./.venv/*" -exec uv run jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace {} \;`
 
-Windows: `for /r %i in (*.ipynb) do jupyter nbconvert --to notebook --ClearOutputPreprocessor.enabled=True --inplace "%i"`
+Windows: `for /r %i in (*.ipynb) do uv run jupyter nbconvert --to notebook --ClearOutputPreprocessor.enabled=True --inplace "%i"`

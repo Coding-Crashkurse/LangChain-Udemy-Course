@@ -65,7 +65,7 @@ def submit():
 st.text_input("You:", key="widget_input", on_change=submit)
 
 if st.session_state.user_input:
-    output = st.session_state.chain.run(st.session_state.user_input)
+    output = st.session_state.chain.invoke(st.session_state.user_input)["text"]
     st.session_state.past.append(st.session_state.user_input)
     st.session_state.generated.append(output)
 

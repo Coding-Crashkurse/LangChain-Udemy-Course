@@ -4,3 +4,4 @@
 udemycourse
 test.ipynb
 .venv
+__pycache__/
