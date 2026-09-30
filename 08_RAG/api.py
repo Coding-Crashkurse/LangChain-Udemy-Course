@@ -48,7 +48,7 @@ PROMPT = PromptTemplate(template=template, input_variables=["context", "input"])
 # chain_type_kwargs = {"prompt": PROMPT}
 llm = ChatOpenAI(model="gpt-4o-mini")
 
-vectorstore = FAISS.load_local("index", embeddings)
+vectorstore = FAISS.load_local("index", embeddings, allow_dangerous_deserialization=True)
 retriever = vectorstore.as_retriever()
 
 # qa = RetrievalQA.from_chain_type(

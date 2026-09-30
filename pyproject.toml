@@ -1,0 +1,31 @@
+[project]
+name = "langchain-udemy-course"
+version = "0.1.0"
+requires-python = ">=3.13"
+dependencies = [
+    "faiss-cpu>=1.15.1",
+    "fastapi>=0.141.1",
+    "langchain>=1.4.3",
+    "langchain-chroma>=1.1.0",
+    "langchain-classic>=1.0.8",
+    "langchain-community>=0.4.2",
+    "langchain-core>=1.6.5",
+    "langchain-openai>=1.6.6",
+    "langchain-postgres>=0.0.18",
+    "langchain-text-splitters>=1.1.2",
+    "langgraph>=1.2.12",
+    "langsmith>=0.14.1",
+    "numpy>=2.5.3",
+    "openai>=3.20.0",
+    "psycopg[binary]>=3.3.6",
+    "python-dotenv>=1.2.3",
+    "streamlit>=1.64.0",
+    "streamlit-chat>=0.1.1",
+    "uvicorn>=0.54.0",
+]
+
+[dependency-groups]
+dev = [
+    "ipykernel>=7.3.0",
+    "nbconvert>=7.17.1",
+]

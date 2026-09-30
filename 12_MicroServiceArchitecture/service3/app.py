@@ -93,7 +93,7 @@ app.add_middleware(
 async def service3(conversation_id: str, conversation: Conversation):
     query = conversation.conversation[-1].content
 
-    docs = retriever.invoke(query=query)
+    docs = retriever.invoke(query)
     docs = format_docs(docs=docs)
 
     prompt = system_message_prompt.format(context=docs)

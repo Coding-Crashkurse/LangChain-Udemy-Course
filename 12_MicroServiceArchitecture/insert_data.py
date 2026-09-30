@@ -1,5 +1,5 @@
 from dotenv import find_dotenv, load_dotenv
-from langchain_community.embeddings import OpenAIEmbeddings
+from langchain_openai import OpenAIEmbeddings
 from langchain_text_splitters import CharacterTextSplitter
 from langchain_postgres import PGVector
 from langchain_community.document_loaders import DirectoryLoader, TextLoader
@@ -23,5 +23,5 @@ PGVector.from_documents(
     docs,
     embeddings,
     collection_name=COLLECTION_NAME,
-    connection_string=CONNECTION_STRING,
+    connection=CONNECTION_STRING,
 )
