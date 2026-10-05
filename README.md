@@ -1,3 +1,8 @@
+# PIP Install Instructions
+
+- to activate venv: cd virtualenvironment\Scripts\activate
+  -- pip install NAME_OF_PACKAGE --trusted-host pypi.org --trusted-host files.pythonhosted.org
+
 # LangChain Course Directory Overview
 
 This Markdown file provides a concise overview of each directory in the LangChain course, detailing the key focus and content of each.
